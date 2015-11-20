@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `buyers` (
 -- Дамп структуры для таблица customs_zero.carriers
 CREATE TABLE IF NOT EXISTS `carriers` (
   `id_carrier` int(11) NOT NULL AUTO_INCREMENT,
-  `carrier_name` varchar(50) DEFAULT NULL COMMENT 'Имя перевозчика',
-  `carrier_specialization` varchar(50) DEFAULT NULL COMMENT 'Специализация',
+  `carrier_name` varchar(50) NOT NULL COMMENT 'Имя перевозчика',
+  `carrier_specialization` varchar(50) NOT NULL COMMENT 'Специализация',
   PRIMARY KEY (`id_carrier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Перевозчики';
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `carriers` (
 -- Дамп структуры для таблица customs_zero.checkpoint
 CREATE TABLE IF NOT EXISTS `checkpoint` (
   `id_checkpoint` int(11) NOT NULL AUTO_INCREMENT,
-  `checkpoint_name` varchar(50) DEFAULT NULL COMMENT 'Имя ПП',
+  `checkpoint_name` varchar(50) NOT NULL COMMENT 'Имя ПП',
   PRIMARY KEY (`id_checkpoint`),
   CONSTRAINT `FK_checkpoint_country` FOREIGN KEY (`id_checkpoint`) REFERENCES `country` (`id_country`),
   CONSTRAINT `FK_checkpoint_delivery` FOREIGN KEY (`id_checkpoint`) REFERENCES `delivery` (`id_delivery`)
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `checkpoint` (
 -- Дамп структуры для таблица customs_zero.country
 CREATE TABLE IF NOT EXISTS `country` (
   `id_country` int(11) NOT NULL AUTO_INCREMENT,
-  `country_name` varchar(50) DEFAULT NULL COMMENT 'Название страны',
+  `country_name` varchar(50) NOT NULL COMMENT 'Название страны',
   PRIMARY KEY (`id_country`),
   CONSTRAINT `FK_country_buyers` FOREIGN KEY (`id_country`) REFERENCES `buyers` (`id_buyer`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Страна: к какой стране какой поставщик принадлежит, а так же граничащий с ней ПП';
@@ -73,11 +73,11 @@ CREATE TABLE IF NOT EXISTS `country` (
 -- Дамп структуры для таблица customs_zero.delivery
 CREATE TABLE IF NOT EXISTS `delivery` (
   `id_delivery` int(11) NOT NULL AUTO_INCREMENT,
-  `delivery_time` date DEFAULT NULL,
-  `delivery_total_weight` int(11) DEFAULT NULL,
-  `delivery_total_volume` int(11) DEFAULT NULL,
-  `delivery_total_number` int(11) DEFAULT NULL,
-  `deliverys_duty` int(11) DEFAULT NULL COMMENT 'Фактическая пошлина',
+  `delivery_time` date NOT NULL,
+  `delivery_total_weight` int(11) NOT NULL,
+  `delivery_total_volume` int(11) NOT NULL,
+  `delivery_total_number` int(11) NOT NULL,
+  `deliverys_duty` int(11) NOT NULL COMMENT 'Фактическая пошлина',
   PRIMARY KEY (`id_delivery`),
   CONSTRAINT `FK_delivery_ratio_goods_delivery` FOREIGN KEY (`id_delivery`) REFERENCES `ratio_goods_delivery` (`id_ratio_gd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поставки';
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `delivery` (
 CREATE TABLE IF NOT EXISTS `duty` (
   `id_duty` int(11) NOT NULL AUTO_INCREMENT,
   `duty_default_size` int(11) NOT NULL,
-  `duty_total_size` int(11) DEFAULT NULL,
+  `duty_total_size` int(11) NOT NULL,
   PRIMARY KEY (`id_duty`),
   CONSTRAINT `FK_duty_ratio_duty_goods` FOREIGN KEY (`id_duty`) REFERENCES `ratio_duty_goods` (`id_ratio_dg`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Пошлины';
@@ -104,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `duty` (
 -- Дамп структуры для таблица customs_zero.goods
 CREATE TABLE IF NOT EXISTS `goods` (
   `id_good` int(11) NOT NULL AUTO_INCREMENT,
-  `good_name` varchar(50) DEFAULT NULL COMMENT 'Название груза',
-  `good_weight` int(11) DEFAULT NULL COMMENT 'Вес груза',
+  `good_name` varchar(50) NOT NULL COMMENT 'Название груза',
+  `good_weight` int(11) NOT NULL COMMENT 'Вес груза',
   `good_amount` int(11) NOT NULL COMMENT 'Кол-во товара',
   `good_volume` int(11) NOT NULL COMMENT 'Объём груза',
   PRIMARY KEY (`id_good`),
@@ -122,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `goods` (
 -- Дамп структуры для таблица customs_zero.providers
 CREATE TABLE IF NOT EXISTS `providers` (
   `id_provider` int(11) NOT NULL AUTO_INCREMENT,
-  `provider_name` varchar(50) DEFAULT NULL COMMENT 'Имя поставщика',
-  `provider_specialization` varchar(50) DEFAULT NULL COMMENT 'Специализация поставщика',
+  `provider_name` varchar(50) NOT NULL COMMENT 'Имя поставщика',
+  `provider_specialization` varchar(50) NOT NULL COMMENT 'Специализация поставщика',
   PRIMARY KEY (`id_provider`),
   CONSTRAINT `FK_providers_goods` FOREIGN KEY (`id_provider`) REFERENCES `goods` (`id_good`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поставщики';
@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS `providers` (
 -- Дамп структуры для таблица customs_zero.ratio_duty_goods
 CREATE TABLE IF NOT EXISTS `ratio_duty_goods` (
   `id_ratio_dg` int(11) NOT NULL AUTO_INCREMENT,
-  `duty_id` int(11) DEFAULT NULL,
-  `good_id` int(11) DEFAULT NULL,
+  `duty_id` int(11) NOT NULL,
+  `good_id` int(11) NOT NULL,
   PRIMARY KEY (`id_ratio_dg`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='Определяет пошлину по товару';
 
@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS `ratio_duty_goods` (
 -- Дамп структуры для таблица customs_zero.ratio_goods_delivery
 CREATE TABLE IF NOT EXISTS `ratio_goods_delivery` (
   `id_ratio_gd` int(11) NOT NULL AUTO_INCREMENT,
-  `good_id` int(11) DEFAULT NULL,
-  `delivery_id` int(11) DEFAULT NULL,
+  `GD_good_id` int(11) NOT NULL,
+  `delivery_id` int(11) NOT NULL,
   PRIMARY KEY (`id_ratio_gd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Для связи "многие-ко-многим"';
 
